@@ -3,6 +3,7 @@ package com.booking.patient_booking.controller;
 import com.booking.patient_booking.entity.PathologyCenters;
 import com.booking.patient_booking.service.PathologyCenterService;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,5 +44,21 @@ public class PathologyCenterController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
         }
         return new ResponseEntity<>(centers, HttpStatus.OK); // 200
+    }
+
+    @DeleteMapping("/delete/{centerId}")
+    public ResponseEntity<String> deleteExistingCenter(@PathVariable String centerId) {
+        try {
+            pathologyCenterService.deleteCenter(centerId);
+            return ResponseEntity.ok("Center is successfully deleted");
+        } catch (EntityNotFoundException ex) {
+            log.error("Center not found: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Delete operation failed: " + ex.getMessage());
+        } catch (RuntimeException ex) {
+            log.error("Unable to delete center: {}", ex.getMessage(), ex);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Delete operation failed: " + ex.getMessage());
+        }
     }
 }

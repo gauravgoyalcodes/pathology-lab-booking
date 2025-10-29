@@ -54,14 +54,11 @@ public class DoctorController {
         } catch (EntityNotFoundException ex) {
             log.error("Doctor not found: {}", ex.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Dele te operation failed: " + ex.getMessage());
+                    .body("Delete operation failed: " + ex.getMessage());
         } catch (RuntimeException ex) {
             log.error("Unable to delete doctor: {}", ex.getMessage(), ex);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Delete operation failed: " + ex.getMessage());
         }
     }
-
-
-
 }
