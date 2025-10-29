@@ -46,7 +46,7 @@ public class PathologyCenterController {
         return new ResponseEntity<>(centers, HttpStatus.OK); // 200
     }
 
-    @DeleteMapping("/delete/{centerIf}")
+    @DeleteMapping("/delete/{centerId}")
     public ResponseEntity<String> deleteExistingCenter(@PathVariable String centerId) {
         try {
             pathologyCenterService.deleteCenter(centerId);
