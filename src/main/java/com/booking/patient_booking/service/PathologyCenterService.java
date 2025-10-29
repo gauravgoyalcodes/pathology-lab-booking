@@ -1,8 +1,10 @@
 package com.booking.patient_booking.service;
 
+import com.booking.patient_booking.entity.Doctor;
 import com.booking.patient_booking.entity.PathologyCenters;
 import com.booking.patient_booking.repository.PathologyCenterRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +32,14 @@ public class PathologyCenterService {
         List<PathologyCenters> centers = pathologyCenterRepository.findAll();
         log.info("List of all centers : " + centers);
         return centers;
+    }
+
+    public void deleteCenter(String centerId) {
+         PathologyCenters center = pathologyCenterRepository.findById(centerId)
+                .orElseThrow(() -> new EntityNotFoundException("Center not found with ID: " + centerId));
+
+        pathologyCenterRepository.delete(center);
+        log.info("Center deleted successfully with ID: {}", centerId);
     }
 
     public String generateCenterId() {
