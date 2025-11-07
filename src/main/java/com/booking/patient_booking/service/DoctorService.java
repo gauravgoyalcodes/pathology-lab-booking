@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,21 @@ public class DoctorService {
 
         doctorRepository.delete(doctor);
         log.info("Doctor deleted successfully with ID: {}", doctorId);
+    }
+
+    public List<Doctor> searchDoctor(String query) {
+        log.info("Searching doctors for query: {}", query);
+
+        List<Doctor> doctors = doctorRepository.findDoctorByNameLike(query);
+
+        // If not found by name → try specialization
+        if (doctors == null || doctors.isEmpty()) {
+            log.info("No match by name, trying specialization...");
+            doctors = doctorRepository.findDoctorBySpecializationLike(query);
+        }
+
+        log.info("Final result count: {}", doctors.size());
+        return doctors;
     }
 
     public String generateDoctorId() {

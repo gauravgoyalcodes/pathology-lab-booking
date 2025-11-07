@@ -46,6 +46,26 @@ public class DoctorController {
         return new ResponseEntity<>(doctors, HttpStatus.OK); // 200
     }
 
+    @GetMapping("/find")
+    public ResponseEntity<?> findDoctor(@RequestParam(required = false) String query) {
+        if (query == null || query.trim().isEmpty()) {
+            List<Doctor> doctors =  doctorService.findAllDoctors();
+        }
+
+        try {
+            List<Doctor> doctors = doctorService.searchDoctor(query);
+
+            if (doctors.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No doctors found for: " + query);
+            }
+
+            return ResponseEntity.ok(doctors);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error while searching: " + ex.getMessage());
+        }
+    }
+
     @DeleteMapping("/delete/{doctorId}")
     public ResponseEntity<String> deleteExistingDoctor(@PathVariable String doctorId) {
         try {

@@ -1,5 +1,6 @@
 package com.booking.patient_booking.service;
 
+import com.booking.patient_booking.entity.Doctor;
 import com.booking.patient_booking.entity.TestMaster;
 import com.booking.patient_booking.repository.TestMasterRepository;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +20,12 @@ public class TestMasterService {
     @Autowired
     TestMasterRepository testMasterRepository;
 
+    public List<TestMaster> findAllTests() {
+        List<TestMaster> doctors = testMasterRepository.findAll();
+        log.info("List of all doctors : " + doctors);
+        return doctors;
+    }
+
     public void saveNewTest(TestMaster test) {
         log.info("test details received from front end : " + test);
         test.setTestCode(generateTestCode(test));
@@ -25,13 +33,13 @@ public class TestMasterService {
         testMasterRepository.save(test);
     }
 
-    public TestMaster updateExistingTest(TestMaster test) {
-
-        Optional<TestMaster> testFromDb = testMasterRepository.findById(test.getTestCode());
-        testFromDb.ifPresent(testMaster -> testMasterRepository.delete(testMaster));
-        testMasterRepository.save(test);
-        return test;
-    }
+//    public TestMaster updateExistingTest(TestMaster test) {
+//
+//        Optional<TestMaster> testFromDb = testMasterRepository.findById(test.getTestCode());
+//        testFromDb.ifPresent(testMaster -> testMasterRepository.delete(testMaster));
+//        testMasterRepository.save(test);
+//        return test;
+//    }
 
 
     public String generateTestCode(TestMaster test) {
