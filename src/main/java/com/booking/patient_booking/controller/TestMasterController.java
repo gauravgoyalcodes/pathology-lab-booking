@@ -46,17 +46,17 @@ public class TestMasterController {
     }
 
 
-//    @PutMapping("/update")
-//    public ResponseEntity<TestMaster> updateExistingTest(@RequestBody TestMaster test) {
-//        try {
-//            TestMaster testUpdated = testMasterService.updateExistingTest(test);
-//            return ResponseEntity.ok(testUpdated);
-//        } catch (RuntimeException ex) {
-//            log.error("Test update failed: {}", ex.getMessage(), ex);
-//            return ResponseEntity
-//                    .status(HttpStatus.BAD_REQUEST)
-//                    .body(test);
-//        }
-//    }
+    @PutMapping("/update")
+    public ResponseEntity<TestMaster> updateExistingTest(@RequestBody TestMaster test) {
+        try {
+            TestMaster testUpdated = testMasterService.updateExistingTest(test);
+            return ResponseEntity.ok(testUpdated);
+        } catch (RuntimeException ex) {
+            log.error("Test update failed: {}", ex.getMessage(), ex);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(test);
+        }
+    }
 
 }

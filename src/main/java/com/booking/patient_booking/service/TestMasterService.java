@@ -33,13 +33,13 @@ public class TestMasterService {
         testMasterRepository.save(test);
     }
 
-//    public TestMaster updateExistingTest(TestMaster test) {
-//
-//        Optional<TestMaster> testFromDb = testMasterRepository.findById(test.getTestCode());
-//        testFromDb.ifPresent(testMaster -> testMasterRepository.delete(testMaster));
-//        testMasterRepository.save(test);
-//        return test;
-//    }
+    public TestMaster updateExistingTest(TestMaster test) {
+
+        Optional<TestMaster> testFromDb = testMasterRepository.findById(test.getTestCode());
+        testFromDb.ifPresent(testMaster -> testMasterRepository.delete(testMaster));
+        testMasterRepository.save(test);
+        return test;
+    }
 
 
     public String generateTestCode(TestMaster test) {
