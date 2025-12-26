@@ -9,14 +9,16 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/pathology-lab")
+@CrossOrigin(origins = "http://localhost:4200")
 public class BookingController {
     Logger log = LoggerFactory.getLogger(BookingService.class);
 
@@ -24,12 +26,10 @@ public class BookingController {
     BookingService bookingService;
 
     @PostMapping("/register")
-    public ResponseEntity<Booking> registerANewBooking(@RequestBody Booking booking){
-        if (booking == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
-        }
-        Booking registeredBooking = bookingService.registerBooking(booking);
-        return new ResponseEntity<>(registeredBooking, HttpStatus.OK); // 200
+    public ResponseEntity<Map<String, String>> register(@RequestBody Booking booking) {
+        Booking b1 = bookingService.registerBooking(booking);
+        bookingService.triggerWhatsappMessageForBooking(b1);
+        return ResponseEntity.ok(Map.of("status", "SUCCESS"));
     }
 
 

@@ -1,10 +1,9 @@
 package com.booking.patient_booking.entity;
 
-import com.booking.patient_booking.enums.*;
-import com.booking.patient_booking.util.StringListConverter;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,49 +12,52 @@ import java.util.List;
 public class Booking {
 
     @Id
-    @Column(name = "booking_id")
     private String bookingId;
 
     @Column(name = "patient_id", nullable = false, length = 50)
     private String patientId;
 
+    @Column(name = "salutation", length = 10)
+    private String salutation;
+
     @Column(name = "patient_name", nullable = false, length = 100)
     private String patientName;
 
-    @Column(name = "contact", nullable = false, length = 10)
-    private String contact;
+    @Column(name = "age", nullable = false)
+    private Integer age;
 
-    @Convert(converter = StringListConverter.class)
-    @Column(name = "test_list", nullable = false, columnDefinition = "TEXT")
-    private List<String> testList; // Could store comma-separated values or JSON
+    @Column(name = "gender", nullable = false, length = 10)
+    private String gender;
 
-    @Column(name = "refd_by", nullable = false, length = 100)
-    private String refdBy;
+    @Column(name = "phone", nullable = false, length = 15)
+    private String phone;
 
-    @Column(name = "refd_by_hospital", length = 200)
-    private String refdByHospital;
+    @Column(name = "email", length = 100)
+    private String email;
 
-    @Column(name = "total_cost", nullable = false, precision = 10, scale = 2)
-    private BigDecimal totalCost = BigDecimal.ZERO;
+    @Column(name = "appointment_date", nullable = false)
+    private LocalDate appointmentDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_mode", nullable = false, length = 10)
-    private PaymentMode paymentMode;
+    @Column(name = "time_slot", nullable = false, length = 20)
+    private String timeSlot;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "collection_type", nullable = false, length = 10)
-    private CollectionType collectionType;
+    @Column(name = "doctor_id", nullable = false, length = 20)
+    private String doctorId;
 
-    @Column(name = "chosen_center", nullable = false, length = 100)
-    private String chosenCenter;
+    @Column(name = "tests_selected")
+    private List<String> tests;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status_flag", nullable = false, length = 10)
-    private StatusFlag statusFlag = StatusFlag.Pending;
+    @Column(name = "total_price", nullable = false)
+    private BigDecimal totalPrice;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status", nullable = false, length = 10)
-    private PaymentStatus paymentStatus = PaymentStatus.Pending;
+    @Column(name = "max_tat", nullable = false, length = 20)
+    private String maxTat;
+
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
+
+    @Column(name = "status", nullable = false, length = 20)
+    private String status; // PENDING / CONFIRMED / CANCELLED
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -63,16 +65,14 @@ public class Booking {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Automatically set timestamps
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     public String getBookingId() {
@@ -91,6 +91,14 @@ public class Booking {
         this.patientId = patientId;
     }
 
+    public String getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(String salutation) {
+        this.salutation = salutation;
+    }
+
     public String getPatientName() {
         return patientName;
     }
@@ -99,84 +107,100 @@ public class Booking {
         this.patientName = patientName;
     }
 
-    public String getContact() {
-        return contact;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
-    public List<String> getTestList() {
-        return testList;
+    public String getGender() {
+        return gender;
     }
 
-    public void setTestList(List<String> testList) {
-        this.testList = testList;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getRefdBy() {
-        return refdBy;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setRefdBy(String refdBy) {
-        this.refdBy = refdBy;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getRefdByHospital() {
-        return refdByHospital;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRefdByHospital(String refdByHospital) {
-        this.refdByHospital = refdByHospital;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public BigDecimal getTotalCost() {
-        return totalCost;
+    public LocalDate getAppointmentDate() {
+        return appointmentDate;
     }
 
-    public void setTotalCost(BigDecimal totalCost) {
-        this.totalCost = totalCost;
+    public void setAppointmentDate(LocalDate appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
 
-    public PaymentMode getPaymentMode() {
-        return paymentMode;
+    public String getTimeSlot() {
+        return timeSlot;
     }
 
-    public void setPaymentMode(PaymentMode paymentMode) {
-        this.paymentMode = paymentMode;
+    public void setTimeSlot(String timeSlot) {
+        this.timeSlot = timeSlot;
     }
 
-    public CollectionType getCollectionType() {
-        return collectionType;
+    public String getDoctorId() {
+        return doctorId;
     }
 
-    public void setCollectionType(CollectionType collectionType) {
-        this.collectionType = collectionType;
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
     }
 
-    public String getChosenCenter() {
-        return chosenCenter;
+    public List<String> getTests() {
+        return tests;
     }
 
-    public void setChosenCenter(String chosenCenter) {
-        this.chosenCenter = chosenCenter;
+    public void setTests(List<String> tests) {
+        this.tests = tests;
     }
 
-    public StatusFlag getStatusFlag() {
-        return statusFlag;
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setStatusFlag(StatusFlag statusFlag) {
-        this.statusFlag = statusFlag;
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
+    public String getMaxTat() {
+        return maxTat;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setMaxTat(String maxTat) {
+        this.maxTat = maxTat;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -195,24 +219,29 @@ public class Booking {
         this.updatedAt = updatedAt;
     }
 
+
     @Override
     public String toString() {
         return "Booking{" +
-                "bookingId=" + bookingId +
+                "bookingId='" + bookingId + '\'' +
                 ", patientId='" + patientId + '\'' +
+                ", salutation='" + salutation + '\'' +
                 ", patientName='" + patientName + '\'' +
-                ", contact='" + contact + '\'' +
-                ", testList=" + testList +
-                ", refdBy='" + refdBy + '\'' +
-                ", refdByHospital='" + refdByHospital + '\'' +
-                ", totalCost=" + totalCost +
-                ", paymentMode=" + paymentMode +
-                ", collectionType=" + collectionType +
-                ", chosenCenter='" + chosenCenter + '\'' +
-                ", statusFlag=" + statusFlag +
-                ", paymentStatus=" + paymentStatus +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", appointmentDate=" + appointmentDate +
+                ", timeSlot='" + timeSlot + '\'' +
+                ", doctorId='" + doctorId + '\'' +
+                ", tests=" + tests +
+                ", totalPrice=" + totalPrice +
+                ", maxTat='" + maxTat + '\'' +
+                ", notes='" + notes + '\'' +
+                ", status='" + status + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
     }
 }
+

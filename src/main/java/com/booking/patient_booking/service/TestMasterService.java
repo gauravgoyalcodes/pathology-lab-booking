@@ -22,7 +22,7 @@ public class TestMasterService {
 
     public List<TestMaster> findAllTests() {
         List<TestMaster> doctors = testMasterRepository.findAll();
-        log.info("List of all doctors : " + doctors);
+        log.info("List of all tests : " + doctors);
         return doctors;
     }
 
