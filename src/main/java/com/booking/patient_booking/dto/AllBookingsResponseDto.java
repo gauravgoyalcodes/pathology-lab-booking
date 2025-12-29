@@ -1,81 +1,35 @@
-package com.booking.patient_booking.entity;
+package com.booking.patient_booking.dto;
 
 import com.booking.patient_booking.enums.StatusFlag;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-@Table(name = "patient_test_bookings")
-public class Booking {
+public class AllBookingsResponseDto {
 
-    @Id
+
     private String bookingId;
-
-    @Column(name = "patient_id", nullable = false, length = 50)
     private String patientId;
-
-    @Column(name = "salutation", length = 10)
     private String salutation;
-
-    @Column(name = "patient_name", nullable = false, length = 100)
     private String patientName;
-
-    @Column(name = "age", nullable = false)
     private Integer age;
-
-    @Column(name = "gender", nullable = false, length = 10)
     private String gender;
-
-    @Column(name = "phone", nullable = false, length = 15)
     private String phone;
-
-    @Column(name = "email", length = 100)
     private String email;
-
-    @Column(name = "appointment_date", nullable = false)
     private LocalDate appointmentDate;
-
-    @Column(name = "time_slot", nullable = false, length = 20)
     private String timeSlot;
-
-    @Column(name = "doctor_id", nullable = false, length = 20)
     private String doctorId;
-
-    @Column(name = "tests_selected")
     private List<String> tests;
-
-    @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
-
-    @Column(name = "max_tat", nullable = false, length = 20)
     private String maxTat;
-
-    @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 20)
-    private StatusFlag status; // PENDING / CONFIRMED / CANCELLED
-
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    private StatusFlag status;
+    private String phleboName;
 
     public String getBookingId() {
         return bookingId;
@@ -205,26 +159,17 @@ public class Booking {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getPhleboName() {
+        return phleboName;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setPhleboName(String phleboName) {
+        this.phleboName = phleboName;
     }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
 
     @Override
     public String toString() {
-        return "Booking{" +
+        return "AllBookingsResponseDto{" +
                 "bookingId='" + bookingId + '\'' +
                 ", patientId='" + patientId + '\'' +
                 ", salutation='" + salutation + '\'' +
@@ -240,10 +185,8 @@ public class Booking {
                 ", totalPrice=" + totalPrice +
                 ", maxTat='" + maxTat + '\'' +
                 ", notes='" + notes + '\'' +
-                ", status='" + status + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", status=" + status +
+                ", phleboName='" + phleboName + '\'' +
                 '}';
     }
 }
-

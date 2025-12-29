@@ -1,7 +1,9 @@
 package com.booking.patient_booking.service;
 
+import com.booking.patient_booking.entity.Booking;
 import com.booking.patient_booking.entity.Doctor;
 import com.booking.patient_booking.entity.TestMaster;
+import com.booking.patient_booking.repository.BookingTestCodeRepository;
 import com.booking.patient_booking.repository.TestMasterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,9 @@ public class TestMasterService {
 
     @Autowired
     TestMasterRepository testMasterRepository;
+
+    @Autowired
+    BookingTestCodeRepository bookingTestCodeRepository;
 
     public List<TestMaster> findAllTests() {
         List<TestMaster> doctors = testMasterRepository.findAll();
@@ -63,5 +69,15 @@ public class TestMasterService {
         if (category.contains("HISTO")) return "HISTO";
 
         return category.substring(0, Math.min(category.length(), 5)); // fallback
+    }
+
+    public List<String> findTestsOfABooking(String bookingId) {
+        List<String> testsChosenByPatient = new ArrayList<String>();
+        String testName = "";
+        for (String testCodes : bookingTestCodeRepository.findTestCodesByBookingId(bookingId)) {
+            testName = testMasterRepository.findById(testCodes).get().getTestName();
+            testsChosenByPatient.add(testName);
+        }
+        return testsChosenByPatient;
     }
 }

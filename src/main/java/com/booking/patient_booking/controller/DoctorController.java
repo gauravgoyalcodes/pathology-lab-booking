@@ -1,6 +1,7 @@
 package com.booking.patient_booking.controller;
 
 import com.booking.patient_booking.entity.Doctor;
+import com.booking.patient_booking.enums.Role;
 import com.booking.patient_booking.service.DoctorService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -10,10 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/pathology-lab/doctors")
@@ -24,15 +28,21 @@ public class DoctorController {
     DoctorService doctorService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerNewDoctor(@RequestBody Doctor doctor) {
+    @PreAuthorize("name = Role.ADMIN, Role.SUPER_ADMIN")
+    public ResponseEntity<Map<String, String>> registerNewDoctor(@RequestBody List<Doctor> doctor) {
         try {
             doctorService.saveDoctor(doctor);
-            return ResponseEntity.ok("Doctor is successfully registered");
+            return ResponseEntity.ok(Map.of("status", "SUCCESS"));
         } catch (RuntimeException ex) {
             log.error("Doctor registration failed: {}", ex.getMessage(), ex);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "FAILED");
+            response.put("message", "Doctor registration failed");
+
             return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Registration failed: " + ex.getMessage());
+                    .badRequest()
+                    .body(response);
         }
     }
 
@@ -49,7 +59,7 @@ public class DoctorController {
     @GetMapping("/find")
     public ResponseEntity<?> findDoctor(@RequestParam(required = false) String query) {
         if (query == null || query.trim().isEmpty()) {
-            List<Doctor> doctors =  doctorService.findAllDoctors();
+            List<Doctor> doctors = doctorService.findAllDoctors();
         }
 
         try {

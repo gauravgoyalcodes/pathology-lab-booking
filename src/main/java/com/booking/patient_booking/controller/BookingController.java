@@ -1,5 +1,6 @@
 package com.booking.patient_booking.controller;
 
+import com.booking.patient_booking.dto.AllBookingsResponseDto;
 import com.booking.patient_booking.entity.Booking;
 import com.booking.patient_booking.enums.StatusFlag;
 import com.booking.patient_booking.service.BookingService;
@@ -18,7 +19,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/pathology-lab")
-@CrossOrigin(origins = "http://localhost:4200")
 public class BookingController {
     Logger log = LoggerFactory.getLogger(BookingService.class);
 
@@ -27,16 +27,15 @@ public class BookingController {
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody Booking booking) {
-        Booking b1 = bookingService.registerBooking(booking);
-        bookingService.triggerWhatsappMessageForBooking(b1);
+        bookingService.registerBooking(booking);
         return ResponseEntity.ok(Map.of("status", "SUCCESS"));
     }
 
 
     @GetMapping("/find-all/bookings")
-    public ResponseEntity<List<Booking>> getAllBookings() {
+    public ResponseEntity<List<AllBookingsResponseDto>> getAllBookings() {
 
-        List<Booking> bookings = bookingService.findAllBookings();
+        List<AllBookingsResponseDto> bookings = bookingService.findAllBookings();
         if (bookings == null || bookings.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
         }

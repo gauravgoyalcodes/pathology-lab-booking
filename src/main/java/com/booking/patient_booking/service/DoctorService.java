@@ -23,10 +23,12 @@ public class DoctorService {
     @Autowired
     DoctorRepository doctorRepository;
 
-    public void saveDoctor(Doctor doctor) {
-        doctor.setDoctorId(generateDoctorId());
-        log.info("Doctor to save in the db : " + doctor);
-        doctorRepository.save(doctor);
+    public void saveDoctor(List<Doctor> doctors) {
+        for(Doctor d : doctors){
+            d.setDoctorId(generateDoctorId());
+            log.info("saving doctors one by one to db");
+            doctorRepository.save(d);
+        }
     }
 
     public List<Doctor> findAllDoctors() {
