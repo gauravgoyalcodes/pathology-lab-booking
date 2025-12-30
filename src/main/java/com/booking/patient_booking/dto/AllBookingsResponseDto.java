@@ -1,10 +1,6 @@
 package com.booking.patient_booking.dto;
 
 import com.booking.patient_booking.enums.StatusFlag;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,7 +19,7 @@ public class AllBookingsResponseDto {
     private String email;
     private LocalDate appointmentDate;
     private String timeSlot;
-    private String doctorId;
+    private String doctorName;
     private List<String> tests;
     private BigDecimal totalPrice;
     private String maxTat;
@@ -111,12 +107,12 @@ public class AllBookingsResponseDto {
         this.timeSlot = timeSlot;
     }
 
-    public String getDoctorId() {
-        return doctorId;
+    public String getDoctorName() {
+        return doctorName;
     }
 
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
     }
 
     public List<String> getTests() {
@@ -180,7 +176,7 @@ public class AllBookingsResponseDto {
                 ", email='" + email + '\'' +
                 ", appointmentDate=" + appointmentDate +
                 ", timeSlot='" + timeSlot + '\'' +
-                ", doctorId='" + doctorId + '\'' +
+                ", doctorId='" + doctorName + '\'' +
                 ", tests=" + tests +
                 ", totalPrice=" + totalPrice +
                 ", maxTat='" + maxTat + '\'' +

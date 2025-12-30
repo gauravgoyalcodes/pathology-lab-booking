@@ -3,10 +3,12 @@ package com.booking.patient_booking.service;
 import com.booking.patient_booking.dto.AllBookingsResponseDto;
 import com.booking.patient_booking.entity.Booking;
 import com.booking.patient_booking.entity.BookingTestCode;
+import com.booking.patient_booking.entity.Doctor;
 import com.booking.patient_booking.enums.StatusFlag;
 import com.booking.patient_booking.repository.BookingRepository;
 
 import com.booking.patient_booking.repository.BookingTestCodeRepository;
+import com.booking.patient_booking.repository.DoctorRepository;
 import com.booking.patient_booking.repository.TestMasterRepository;
 import com.booking.patient_booking.util.WhatsappService;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookingService {
@@ -40,6 +43,9 @@ public class BookingService {
 
     @Autowired
     TestMasterService testMasterService;
+
+    @Autowired
+    DoctorRepository doctorRepository;
 
     @Autowired
     WhatsappService whatsappService;
@@ -95,7 +101,10 @@ public class BookingService {
 
         for (Booking b : bookings) {
             AllBookingsResponseDto dto = new AllBookingsResponseDto();
+            Optional<Doctor> doctor = doctorRepository.findById(b.getDoctorId());
+
             b.setTests(testMasterService.findTestsOfABooking(b.getBookingId()));
+            doctor.ifPresent(value -> dto.setDoctorName(value.getDoctorName()));
             BeanUtils.copyProperties(b, dto);
             if (phleboService.findAssignedPhleboBasedOnBookingId(b.getBookingId()) != null) {
                 dto.setPhleboName(phleboService.findAssignedPhleboBasedOnBookingId(b.getBookingId()).getName());

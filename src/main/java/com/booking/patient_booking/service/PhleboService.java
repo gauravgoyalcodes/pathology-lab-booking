@@ -10,10 +10,12 @@ import com.booking.patient_booking.repository.PhleboRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,15 +30,21 @@ public class PhleboService {
     PhleboAssignmentRepository phleboAssignmentRepository;
 
     @Transactional
-    public Phlebo addPhlebo(AddPhleboRequest request) {
+    public List<Phlebo> addPhlebo(List<AddPhleboRequest> request) {
+        List<Phlebo> phleboResponse = new ArrayList<>();
 
-        Phlebo phlebo = new Phlebo();
-        phlebo.setName(request.getName());
-        phlebo.setPhone(request.getPhone());
-        phlebo.setBranchId(request.getBranchId());
-        phlebo.setStatus(PhleboStatus.ACTIVE);
+        for (AddPhleboRequest p : request) {
+            Phlebo phlebo = new Phlebo();
+            BeanUtils.copyProperties(p, phlebo);
+            phleboRepository.save(phlebo);
+            phleboResponse.add(phlebo);
+        }
+        return phleboResponse;
+    }
 
-        return phleboRepository.save(phlebo);
+    @Transactional
+    public List<Phlebo> findAllPhlebos() {
+        return phleboRepository.findAll();
     }
 
     @Transactional

@@ -32,11 +32,13 @@ public class TestMasterService {
         return doctors;
     }
 
-    public void saveNewTest(TestMaster test) {
+    public void saveNewTest(List<TestMaster> test) {
         log.info("test details received from front end : " + test);
-        test.setTestCode(generateTestCode(test));
-        log.info("test details before being saved to db : " + test);
-        testMasterRepository.save(test);
+        for(TestMaster t : test){
+            t.setTestCode(generateTestCode(t));
+            log.info("test details before being saved to db : " + test);
+            testMasterRepository.save(t);
+        }
     }
 
     public TestMaster updateExistingTest(TestMaster test) {

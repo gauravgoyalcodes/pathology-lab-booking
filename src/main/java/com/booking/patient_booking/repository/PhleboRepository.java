@@ -21,7 +21,7 @@ public interface PhleboRepository extends JpaRepository<Phlebo, Long> {
                     WHERE pa.phlebo = p
                       AND pa.appointmentDate = :date
                       AND pa.timeSlot = :slot
-                ) < 2
+                ) < 3
             """)
     List<Phlebo> findAvailablePhlebos(
             @Param("branchId") Long branchId,

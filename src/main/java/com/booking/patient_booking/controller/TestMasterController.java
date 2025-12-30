@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/pathology-lab/tests")
@@ -23,7 +25,7 @@ public class TestMasterController {
     TestMasterService testMasterService;
 
     @GetMapping("/find-all")
-    public ResponseEntity<List<TestMaster>> getAllDoctors() {
+    public ResponseEntity<List<TestMaster>> gatAlltests() {
 
         List<TestMaster> testsList = testMasterService.findAllTests();
         if (testsList == null || testsList.isEmpty()) {
@@ -33,15 +35,21 @@ public class TestMasterController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerNewTest(@RequestBody TestMaster test) {
+    public ResponseEntity<Map<String, String>> registerNewTest(@RequestBody List<TestMaster> test) {
+
         try {
             testMasterService.saveNewTest(test);
-            return ResponseEntity.ok("Test is successfully Added");
+            return ResponseEntity.ok(Map.of("status", "SUCCESS"));
         } catch (RuntimeException ex) {
             log.error("Test registration failed: {}", ex.getMessage(), ex);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "FAILED");
+            response.put("message", "Test registration failed");
+
             return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Registration failed: " + ex.getMessage());
+                    .badRequest()
+                    .body(response);
         }
     }
 

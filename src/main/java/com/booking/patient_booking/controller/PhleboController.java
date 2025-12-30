@@ -7,10 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pathology-lab/phlebos")
@@ -21,8 +20,17 @@ public class PhleboController {
     PhleboService phleboService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addPhlebo(@RequestBody AddPhleboRequest request) {
-        Phlebo savedPhlebo = phleboService.addPhlebo(request);
+    public ResponseEntity<List<Phlebo>> addPhlebo(@RequestBody List<AddPhleboRequest> request) {
+        List<Phlebo> savedPhlebo = phleboService.addPhlebo(request);
+        return ResponseEntity.ok(savedPhlebo);
+    }
+
+    @GetMapping("/find-all")
+    public ResponseEntity<?> findAllPhlebos() {
+        List<Phlebo> savedPhlebo = phleboService.findAllPhlebos();
+        if(savedPhlebo.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(savedPhlebo);
     }
 }
