@@ -1,4 +1,4 @@
-package com.booking.patient_booking.util;
+package com.booking.patient_booking.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,14 +16,15 @@ import java.util.List;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> {
-                })   // 🔥 still REQUIRED
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/pathology-lab/**").permitAll()
+                        .requestMatchers(
+                                "/api/pathology-lab/**",
+                                "/pathology-lab/**",
+                                "/actuator/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 );
 
@@ -31,11 +32,19 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:4200"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+        config.setAllowedOrigins(List.of(
+                "http://localhost:4200",
+                "https://www.drrpankajsrugipath.co.in",
+                "https://drrpankajsrugipath.co.in"
+        ));
+
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH"
+        ));
+
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
