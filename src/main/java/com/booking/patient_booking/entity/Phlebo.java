@@ -19,7 +19,7 @@ public class Phlebo {
     private String phone;
 
     @Column(name = "branch_id", nullable = false)
-    private Long branchId;
+    private String branchId;
 
     @Enumerated(EnumType.STRING)
     private PhleboStatus status = PhleboStatus.ACTIVE;
@@ -65,11 +65,11 @@ public class Phlebo {
         this.phone = phone;
     }
 
-    public Long getBranchId() {
+    public String getBranchId() {
         return branchId;
     }
 
-    public void setBranchId(Long branchId) {
+    public void setBranchId(String branchId) {
         this.branchId = branchId;
     }
 
