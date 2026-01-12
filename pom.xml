@@ -14,7 +14,7 @@
 
 	<groupId>com.booking</groupId>
 	<artifactId>patient-booking</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<name>patient-booking</name>
 	<description>Patient booking system for Dr. Pankaj Surgical</description>
 

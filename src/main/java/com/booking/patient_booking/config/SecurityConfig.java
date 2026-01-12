@@ -38,8 +38,8 @@ public class SecurityConfig {
 
         config.setAllowedOrigins(List.of(
                 "http://localhost:4200",
-                "https://www.drrpankajsrugipath.co.in",
-                "https://drrpankajsrugipath.co.in"
+                "https://www.drpankajsurgipath.co.in",
+                "https://drpankajsurgipath.co.in"
         ));
 
         config.setAllowedMethods(List.of(
