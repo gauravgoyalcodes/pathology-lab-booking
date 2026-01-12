@@ -27,7 +27,7 @@ public class CenterService {
 
     public List<Centers> findAllCenters() {
         List<Centers> centers = centerRepository.findAll();
-        return centerRepository.findByActiveTrue();
+        return centers;
 
     }
 

@@ -3,7 +3,7 @@ package com.booking.patient_booking.dto;
 public class AddPhleboRequest {
     private String name;
     private String phone;
-    private Long branchId;
+    private String branchName;
 
     public String getName() {
         return name;
@@ -21,12 +21,13 @@ public class AddPhleboRequest {
         this.phone = phone;
     }
 
-    public Long getBranchId() {
-        return branchId;
+
+    public String getBranchName() {
+        return branchName;
     }
 
-    public void setBranchId(Long branchId) {
-        this.branchId = branchId;
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class AddPhleboRequest {
         return "AddPhleboRequest{" +
                 "name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
-                ", branchId=" + branchId +
+                ", branchName=" + branchName +
                 '}';
     }
 }

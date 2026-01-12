@@ -4,7 +4,7 @@ import com.booking.patient_booking.dto.AddPhleboRequest;
 import com.booking.patient_booking.entity.Booking;
 import com.booking.patient_booking.entity.Phlebo;
 import com.booking.patient_booking.entity.PhleboAssignment;
-import com.booking.patient_booking.enums.PhleboStatus;
+import com.booking.patient_booking.repository.CenterRepository;
 import com.booking.patient_booking.repository.PhleboAssignmentRepository;
 import com.booking.patient_booking.repository.PhleboRepository;
 
@@ -29,6 +29,9 @@ public class PhleboService {
     @Autowired
     PhleboAssignmentRepository phleboAssignmentRepository;
 
+    @Autowired
+    CenterRepository centerRepository;
+
     @Transactional
     public List<Phlebo> addPhlebo(List<AddPhleboRequest> request) {
         List<Phlebo> phleboResponse = new ArrayList<>();
@@ -36,6 +39,8 @@ public class PhleboService {
         for (AddPhleboRequest p : request) {
             Phlebo phlebo = new Phlebo();
             BeanUtils.copyProperties(p, phlebo);
+            log.info("branch name received from the UI : {}", p.getBranchName());
+            phlebo.setBranchId(centerRepository.findByCenterName(p.getBranchName()).getCenterId());
             phleboRepository.save(phlebo);
             phleboResponse.add(phlebo);
         }

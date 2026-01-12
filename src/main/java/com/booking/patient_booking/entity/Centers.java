@@ -33,7 +33,7 @@ public class Centers {
     private String email;
 
     @Column(name = "active", nullable = false, length = 5)
-    private Boolean active;
+    private Boolean active = true;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
